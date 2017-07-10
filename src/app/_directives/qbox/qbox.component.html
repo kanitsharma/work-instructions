@@ -1,0 +1,124 @@
+<div fxLayout="column">
+  <div fxLayout="column" fxLayoutAlign="space-between start">
+    <div *ngIf='!menuhide' class="question">
+      <md-select  placeholder="Question Type" [(ngModel)]="selectedValue" (change)="qtypefun()">
+        <md-option *ngFor="let option of options; let i = index" [value]="qtypes[i]">
+          {{option}}
+        </md-option>
+      </md-select>
+    </div>
+    <div>
+      <div *ngIf='menuhide'>
+        <h5>{{qno.qname}} <button md-icon-button (click)='openme()'><md-icon>{{down}}</md-icon></button></h5>
+      </div>
+      <div *ngIf = '!menuhide' class="question">
+        <md-input-container>
+          <input mdInput placeholder="Question" class=" large swidth" [(ngModel)] = 'qno.qname' >
+        </md-input-container>
+      </div>
+    </div>
+  </div>
+  <div class="hquest" #open *ngIf = 'menuhide'>
+    <div fxLayout="column" *ngIf='qno.qtype == "radio"'>
+      <div>
+        <md-radio-group [(ngModel)]="mcqselected">
+          <md-radio-button fxLayout="column" *ngFor="let question of qno.options" [value]="question">
+            <div >
+              <div class="question pad">
+                <p style="font-size:12px;">{{question}}</p>
+              </div>
+            </div>
+          </md-radio-button>
+        </md-radio-group>
+      </div>
+    </div>
+    <div fxLayout="column" *ngIf='qno.qtype == "slider"'>
+      <div>
+        <md-slider
+        [max]="qno.options.max"
+        [min]="qno.options.min"
+        [step]="qno.options.prec"
+        [thumb-label]="qno.options.showthumb"
+        ></md-slider>
+      </div>
+    </div>
+    <div fxLayout="column" *ngIf='qno.qtype == "num"'>
+      <div fxLayout="row">
+        <form>
+          <md-input-container class="pad">
+            <input type="number" mdInput placeholder="Answer" class="large" required="true" [max]="qno.options.max" [min]="qno.options.min">
+          </md-input-container>
+        </form>
+      </div>
+    </div>
+    <div fxLayout="column" *ngIf='qno.qtype == "text"'>
+      <div fxLayout="row">
+        <form>
+          <md-input-container class="pad">
+            <input type="text" mdInput placeholder="Answer" class="large" required="true" [max]="qno.options.max" [min]="qno.options.min">
+          </md-input-container>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div *ngIf='!menuhide'>
+    <div fxLayout="column" *ngIf='selectedValue == qtypes[0]'>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <md-input-container class="pad">
+          <input mdInput type = 'number' placeholder="Minimum" class="large" [(ngModel)] = 'qno.options.min'>
+        </md-input-container>
+        <md-input-container class="pad">
+          <input mdInput type = 'number' placeholder="Step Size" class="large" [(ngModel)] = 'qno.options.prec'>
+        </md-input-container>
+        <md-input-container class="pad">
+          <input mdInput type = 'number' placeholder="Maximum" class="large" [(ngModel)] = 'qno.options.max'>
+        </md-input-container>
+        <div class="pad">
+          <md-checkbox [(ngModel)]="qno.options.showthumb">Show Thumbs</md-checkbox>
+        </div>
+      </div>
+    </div>
+    <div fxLayout="column" *ngIf='selectedValue == qtypes[1]'>
+      <div>
+        <md-radio-group>
+          <md-radio-button [disabled]='true' fxLayout="column" *ngFor="let question of qno.options;let i = index;trackBy:trackByIndex;" [value]="question">
+
+            <div fxLayout="row" fxLayoutAlign="center center">
+              <div class="question pad" style="margin-left:3px;">
+                <md-input-container >
+                  <input mdInput  placeholder="Enter choice" [(ngModel)]='qno.options[i]'>
+                </md-input-container>
+                <button color='primary' md-icon-button  (click) = 'add()'><md-icon>add</md-icon></button>
+                <button color='primary' md-icon-button  (click) = 'minus()'><md-icon>clear</md-icon></button>
+              </div>
+              <div *ngIf='!logichide' class="marg">
+                <md-select placeholder="Go to Section ">
+                  <md-option *ngFor="let section of sections;let i=index;" [value]="Step">
+                    Go to section {{i+1}}
+                  </md-option>
+                </md-select>
+              </div>
+            </div>
+          </md-radio-button>
+        </md-radio-group>
+      </div>
+    </div>
+    <div fxLayout="column" *ngIf='selectedValue == qtypes[3]'>
+      <div fxLayout="row">
+        <md-input-container class="pad">
+          <input mdInput placeholder="Answer" class="large" [(ngModel)] = 'date_label'>
+        </md-input-container>
+      </div>
+    </div>
+    <div fxLayout="column" *ngIf='selectedValue == qtypes[2]'>
+      <div fxLayout="row">
+        <md-input-container class="pad">
+          <input mdInput placeholder="Maximum" class="large" type='number' [(ngModel)] = 'qno.options.max' required="true">
+        </md-input-container>
+        <md-input-container class="pad">
+          <input mdInput placeholder="Minimum" class="large" type='number' [(ngModel)] = 'qno.options.min' required="true">
+        </md-input-container>
+      </div>
+    </div>
+  </div>
+</div>

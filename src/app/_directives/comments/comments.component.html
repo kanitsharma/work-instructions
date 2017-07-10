@@ -1,0 +1,93 @@
+<h4 style="margin-bottom : 10px;">Add comment</h4>
+<input type="text" placeholder="Enter Comment" class="textarea" [(ngModel)] = 'comment' (keyup.enter)="submitcomment(e)"/>
+<div class="comments">
+  <md-tab-group>
+    <md-tab label="Unresolved">
+      <div class="comment" *ngFor="let com of comments.lvl1;let u = index" [hidden]='com.stat == "r"'>
+        {{com.t}}
+        <div class="reply" fxLayout='column' fxLayoutAlign='start start'>
+          <div *ngFor='let r1 of com.rep;let i = index' class="rpltxt">
+            {{r1.t}}
+            <div class="reply" fxLayout='column' fxLayoutAlign='start start'>
+              <div *ngFor='let r2 of r1.rep;let j = index' class="rpltxt">
+                {{r2.t}}
+                <div class="reply" fxLayout='column' fxLayoutAlign='start start'>
+                  <div *ngFor='let r3 of r2.rep;let k = index' class="rpltxt">
+                    {{r3.t}}
+                    <div class="reply" fxLayout='column' fxLayoutAlign='start start'>
+                      <div *ngFor='let r4 of r3.rep;let l = index' class="rpltxt">
+                        {{r4.t}}
+                      </div>
+                      <input type="text" placeholder="Leave a reply" class="replybox" [(ngModel)] = 'replylvl4[r3.t]' (keyup.enter)="submitr4(u,i,j,k,replylvl4[r3.t])"/>
+                    </div>
+                  </div>
+                  <input type="text" placeholder="Leave a reply" class="replybox" [(ngModel)] = 'replylvl3[r2.t]' (keyup.enter)="submitr3(u,i,j,replylvl3[r2.t])"/>
+                </div>
+              </div>
+              <input type="text" placeholder="Leave a reply" class="replybox" [(ngModel)] = 'replylvl2[r1.t]' (keyup.enter)="submitr2(u,i,replylvl2[r1.t])"/>
+            </div>
+          </div>
+          <input type="text" placeholder="Leave a reply" class="replybox" [(ngModel)] = 'replylvl1[com.t]' (keyup.enter)="submitr1(u,replylvl1[com.t])"/>
+        </div>
+      </div>
+    </md-tab>
+    <md-tab label="Resolved">
+      <div class="comment" *ngFor="let com of comments.lvl1;let u = index" [hidden]='com.stat != "r"'>
+        {{com.t}}
+        <div class="reply" fxLayout='column' fxLayoutAlign='start start'>
+          <div *ngFor='let r1 of com.rep;let i = index' class="rpltxt">
+            {{r1.t}}
+            <div class="reply" fxLayout='column' fxLayoutAlign='start start'>
+              <div *ngFor='let r2 of r1.rep;let j = index' class="rpltxt">
+                {{r2.t}}
+                <div class="reply" fxLayout='column' fxLayoutAlign='start start'>
+                  <div *ngFor='let r3 of r2.rep;let k = index' class="rpltxt">
+                    {{r3.t}}
+                    <div class="reply" fxLayout='column' fxLayoutAlign='start start'>
+                      <div *ngFor='let r4 of r3.rep;let l = index' class="rpltxt">
+                        {{r4.t}}
+                      </div>
+                      <input type="text" placeholder="Leave a reply" class="replybox" [(ngModel)] = 'replylvl4[r3.t]' (keyup.enter)="submitr4(u,i,j,k,replylvl4[r3.t])"/>
+                    </div>
+                  </div>
+                  <input type="text" placeholder="Leave a reply" class="replybox" [(ngModel)] = 'replylvl3[r2.t]' (keyup.enter)="submitr3(u,i,j,replylvl3[r2.t])"/>
+                </div>
+              </div>
+              <input type="text" placeholder="Leave a reply" class="replybox" [(ngModel)] = 'replylvl2[r1.t]' (keyup.enter)="submitr2(u,i,replylvl2[r1.t])"/>
+            </div>
+          </div>
+          <input type="text" placeholder="Leave a reply" class="replybox" [(ngModel)] = 'replylvl1[com.t]' (keyup.enter)="submitr1(u,replylvl1[com.t])"/>
+        </div>
+      </div>
+    </md-tab>
+    <md-tab label="All">
+      <div class="comment" *ngFor="let com of comments.lvl1;let u = index">
+        {{com.t}}
+        <div class="reply" fxLayout='column' fxLayoutAlign='start start'>
+          <div *ngFor='let r1 of com.rep;let i = index' class="rpltxt">
+            {{r1.t}}
+            <div class="reply" fxLayout='column' fxLayoutAlign='start start'>
+              <div *ngFor='let r2 of r1.rep;let j = index' class="rpltxt">
+                {{r2.t}}
+                <div class="reply" fxLayout='column' fxLayoutAlign='start start'>
+                  <div *ngFor='let r3 of r2.rep;let k = index' class="rpltxt">
+                    {{r3.t}}
+                    <div class="reply" fxLayout='column' fxLayoutAlign='start start'>
+                      <div *ngFor='let r4 of r3.rep;let l = index' class="rpltxt">
+                        {{r4.t}}
+                      </div>
+                      <input type="text" placeholder="Leave a reply" class="replybox" [(ngModel)] = 'replylvl4[r3.t]' (keyup.enter)="submitr4(u,i,j,k,replylvl4[r3.t])"/>
+                    </div>
+                  </div>
+                  <input type="text" placeholder="Leave a reply" class="replybox" [(ngModel)] = 'replylvl3[r2.t]' (keyup.enter)="submitr3(u,i,j,replylvl3[r2.t])"/>
+                </div>
+              </div>
+              <input type="text" placeholder="Leave a reply" class="replybox" [(ngModel)] = 'replylvl2[r1.t]' (keyup.enter)="submitr2(u,i,replylvl2[r1.t])"/>
+            </div>
+          </div>
+          <input type="text" placeholder="Leave a reply" class="replybox" [(ngModel)] = 'replylvl1[com.t]' (keyup.enter)="submitr1(u,replylvl1[com.t])"/>
+        </div>
+      </div>
+    </md-tab>
+  </md-tab-group>
+</div>

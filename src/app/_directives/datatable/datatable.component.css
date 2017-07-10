@@ -1,0 +1,76 @@
+.datatable-table {
+    margin-top: 5px;
+}
+
+.setting-popover {
+    position: absolute;
+    margin-top: 15px;
+    text-align: left;
+    right: 0;
+    padding: 10px;
+    background: #FFFFFF;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border: #CACFD2 solid 2px;
+    z-index: 100;
+}
+
+.setting-popover:after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 0 10px 10px;
+    border-color: #FFFFFF transparent;
+    display: block;
+    width: 0;
+    z-index: 100;
+    top: -10px;
+    left: calc(100% - 35px);
+}
+
+.setting-popover:before {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 0 11px 11px;
+    border-color: #CACFD2 transparent;
+    display: block;
+    width: 0;
+    z-index: 100;
+    top: -13px;
+    left: calc(100% - 36px);
+}
+
+.checkbox-group {
+    max-height: 300px;
+}
+
+.row-group {
+    margin-top: 5px;
+}
+
+.font-size-medium {
+    font-size: 18px;
+}
+
+.action-parent {
+    position: relative;
+}
+
+.action-float {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 200;
+}
+
+.action-parent:hover .action-float {
+    display: inline-block;
+}
+
+.sort-column {
+    color: #2980B9;
+    cursor: pointer;
+}

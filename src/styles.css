@@ -1,0 +1,33 @@
+@import "./assets/literallycanvas.css";
+@import url('https://fonts.googleapis.com/css?family=Exo+2');
+*{
+  padding : 0px;
+  margin : 0px;
+  font-family: 'Exo 2', sans-serif;
+}
+html{
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
+.literally{
+  height: 70vh !important;
+  width: 70vw !important;
+}
+.mat-input-placeholder {
+  color: #888888 !important;
+  font-size: 12px !important;
+}
+.mat-select-trigger{
+  font-size: 12px !important;
+}
+.mat-checkbox-label{
+  font-size: 12px;
+}
+.mat-tab-labels{
+  margin: 0px 60px;
+}
+.mat-card-header-text{
+  height: 0px !important;
+}

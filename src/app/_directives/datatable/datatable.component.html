@@ -1,0 +1,192 @@
+<div class="text-right" *ngIf="tableData.buttonAction.active">
+    <div class="btn-group">
+        <button type="button" class="btn btn-success btn-lg" (click)="emitToParent(tableData.buttonAction.main.procedure)">{{tableData.buttonAction.main.name}}</button>
+        <button type="button" class="btn btn-success btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" *ngIf="tableData.buttonAction.dropdown!=undefined">
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" *ngIf="tableData.buttonAction.dropdown!=undefined">
+            <li *ngFor="let action of tableData.buttonAction.dropdown" (click)="emitToParent(action.procedure)"><a>{{action.name}}</a></li>
+        </ul>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-xs-4">
+        <div class="btn-group" *ngIf="tableData.batchAction.active">
+            <button type="button" class="btn btn-default" (click)="uncheckAll()"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></button>
+            <button type="button" class="btn btn-default" *ngIf="selectedIds.length!=0">{{selectedIds.length}} item(s) selected</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li *ngFor="let item of tableData.batchAction.dropdown" (click)="emitToParent(item.procedure)"><a>{{item.name}}</a></li>
+                <li role="separator" class="divider" *ngIf="tableData.batchAction.batchExport||tableData.batchAction.batchPrint"></li>
+                <li (click)="emitToParent('BatchExport')" *ngIf="tableData.batchAction.batchExport"><a>Export</a></li>
+                <li (click)="emitToParent('BatchPrint')" *ngIf="tableData.batchAction.batchPrint"><a>Print</a></li>
+            </ul>
+        </div>
+        <div class="input-group" *ngIf="tableData.filter.active">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" (click)="clearFilter()">
+                    <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+            </button>
+            </span>
+            <input type="text" class="form-control" placeholder="{{tableData.filter.placeholder}}" [(ngModel)]="filterString" (keyup.enter)="filterQuery()">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default" (click)="clearFilter()">{{tableData.filter.filterBy.name}}</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li *ngFor="let item of tableData.filter.filters" (click)="setFilter(item.id, item.name)"><a>{{item.name}}</a></li>
+            </ul>
+            </span>
+        </div>
+    </div>
+    <div class="col-xs-8 text-right">
+        <span class="span-button glyphicon glyphicon-print" (click)="executeDatatableAction('PrintTable')" aria-hidden="true"></span>
+        <span class="span-button glyphicon glyphicon-share" (click)="executeDatatableAction('DownloadCSV')" aria-hidden="true"></span>
+        <span class="span-button glyphicon glyphicon-cog" (click)="tooglePopover()" aria-hidden="true"></span>
+        <div class="setting-popover" *ngIf="settingPopover">
+            <span class="font-size-medium">Columns</span>
+            <div class="checkbox-group">
+                <div class="checkbox" *ngFor="let item of tableData.columns">
+                    <label><input type="checkbox" value="" [(ngModel)]="item.active">{{item.name}}</label>
+                </div>
+            </div>
+            <span class="font-size-medium">Rows</span>
+            <div class="row-group">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <input type="number" class="form-control" min="1" max="500" value="10" [(ngModel)]="tableData.rows">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <button class="btn btn-default btn-block" type="button" (click)="setPageSize()">Set</button>
+                    </div>
+                </div>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" value="" [(ngModel)]="tableData.compact">Compact</label>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" value="" [(ngModel)]="tableData.groupByCategory">Group by category</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="datatable-table">
+    <table class="table table-striped table-bordered table-condensed table-hover">
+        <thead>
+            <tr>
+                <th class="text-center" *ngIf="tableData.batchAction.active">
+                    <input type="checkbox" [checked]="allChecked()" (change)="checkAll($event)">
+                </th>
+                <th *ngIf="tableData.serialColumn">#</th>
+                <template ngFor let-item [ngForOf]="tableData.columns">
+                <th *ngIf="item.active">
+                <template [ngIf]="tableData.sort.active">
+                    <template ngFor let-sort [ngForOf]="tableData.sort.sorters">
+                        <span class="sort-column" (click)="sortData(sort.id, sort.name)" *ngIf="sort.id==item.id">
+                            {{item.name}}
+                            <span class="glyphicon glyphicon-chevron-up" aria-hidden="true" *ngIf="tableData.sort.sortBy.order===1"></span>
+                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" *ngIf="tableData.sort.sortBy.order===-1"></span>
+                        </span>
+                        <span *ngIf="sort.id!=item.id">{{item.name}}</span>
+                     </template>
+                </template>
+                <template [ngIf]="!tableData.sort.active">
+                    <span>{{item.name}}</span>
+                </template>
+                </th>
+                </template>
+                <th *ngIf="tableData.tableAction.active">
+                    ACTION
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of tableData.data; let i_index=index">
+                <td class="text-center" *ngIf="tableData.batchAction.active">
+                    <input type="checkbox" [checked]="isChecked(item._id)" (change)="checkItem(item._id, $event)">
+                </td>
+                <td *ngIf="tableData.serialColumn">{{i_index + pagerData.startIndex + 1}}</td>
+                <template ngFor let-key [ngForOf]="tableData.columns">
+                <td class="action-parent" *ngIf="key.active">
+                <template ngFor let-filter [ngForOf]="tableData.filter.filters">   
+                <div class="action-float" *ngIf="filter.id==key.id">
+                    <button type="button" class="btn btn-default btn-xs" (click)="fillFilter(item, key.id)"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>
+                </div>   
+                </template>
+                <template [ngIf]="key.image">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img src="{{getItemValue(item, key.image.keyPath)}}" alt="table-item-image" width="50" class="img-rounded" (error)="handleImageError($event)">
+                        </div>
+                        <div class="col-md-10">
+                             {{getItemValue(item, key.keyPath)}}
+                        </div>
+                    </div>
+                </template>
+                <template [ngIf]="!key.image">
+                <template [ngIf]="key.iconId">
+                <template ngFor let-icon [ngForOf]="tableData.icons">   
+                    <div class="text-center" *ngIf="icon.id==key.iconId">
+                        <span class="{{icon.className}}" aria-hidden="true"></span>
+                    </div>   
+                </template>
+                </template>
+                <template [ngIf]="!key.iconId">
+                <template [ngIf]="key.dateFilter">
+                    {{getItemValue(item, key.keyPath) | date: 'dd/MM/yyyy'}}
+                </template>
+                <template [ngIf]="!key.dateFilter">
+                    {{getItemValue(item, key.keyPath)}}
+                </template>
+                </template>
+                </template>
+                </td>
+                </template>
+                <td *ngIf="tableData.tableAction.active">
+                    <div class="btn-group">
+                        <button type="button" (click)="sendToParent(item, tableData.tableAction.main.procedure)" class="btn btn-default">{{tableData.tableAction.main.name}}</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" *ngIf="tableData.tableAction.dropdown!=undefined">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" *ngIf="tableData.tableAction.dropdown!=undefined">
+                            <li *ngFor="let action of tableData.tableAction.dropdown" (click)="sendToParent(item, action.procedure)"><a>{{action.name}}</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="100">
+                    <div class="text-center">
+                        <div *ngIf="pagerData.pages && pagerData.pages.length" class="btn-group">
+                            <button [disabled]="pagerData.currentPage === 1" type="button" class="btn btn-default" (click)="setPage(1)">
+                                <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+                            </button>
+                            <button [disabled]="pagerData.currentPage === 1" type="button" class="btn btn-default" (click)="setPage(pagerData.currentPage - 1)">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            </button>
+                            <template ngFor let-page [ngForOf]="pagerData.pages">
+                                <button type="button" [ngClass]="{'btn':true, 'btn-default':pagerData.currentPage !== page, 'btn-primary':pagerData.currentPage === page}" (click)="setPage(page)">
+                                    {{page}}
+                                </button>
+                            </template>
+                            <button [disabled]="pagerData.currentPage === pagerData.totalPages" type="button" class="btn btn-default" (click)="setPage(pagerData.currentPage + 1)">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            </button>
+                            <button [disabled]="pagerData.currentPage === pagerData.totalPages" type="button" class="btn btn-default" (click)="setPage(pagerData.totalPages)">
+                                <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

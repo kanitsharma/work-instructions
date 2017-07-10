@@ -1,0 +1,50 @@
+.questionaire{
+  margin: 30px 0px;
+  border: 2px solid grey;
+  padding: 30px;
+}
+.padding{
+  padding: 5px;
+}
+.question{
+  margin: 8px 0px;
+  color: black;
+}
+.mat-card{
+  padding: 0px !important;
+  margin: 0px !important;
+}
+.width{
+  width: 100%;
+}
+.large{
+  font-size: 12px;
+}
+input{
+  font-size: 12px;
+}
+.pad{
+  margin-right: 10px;
+}
+.marg{
+  margin-left: 80px;
+}
+.hquest{
+  max-height: 0px;
+  overflow: hidden;
+  transition: all 0.5s ease;
+}
+.new{
+  padding: 5px 0px;
+  overflow: visible;
+  max-height: 32vh;
+}
+.swidth{
+  width: 350px;
+}
+.mat-card{
+  padding: 0px !important;
+}
+p{
+  font-size: 13px;
+}

@@ -1,0 +1,13 @@
+<div class="pwrapper" >
+  <div class="section">
+    <div class='toolbar' fxLayout="row" fxLayoutAlign="space-between center">
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="hove">
+        <p *ngIf='!sec_edit'>{{section.t}} </p><input type="text" class="text" (keyup.enter)="toggle()" [(ngModel)]='section.t' *ngIf='sec_edit'>&nbsp;&nbsp;<md-icon class="icon" (click)='toggle()'>create</md-icon>
+      </div>
+      <button md-icon-button (click)="addsection()" mdTooltip="Add new section" mdTooltipPosition="left" class="hide"><md-icon>add</md-icon></button>
+    </div>
+    <div class="sectionwrapper" *ngFor = 'let step of template.steps;let si = index'>
+      <app-card [step] = 'step' [section]='section' [steps]='steps'  [instruction] = 'instruction' [i] = 'i' [si]='si' (changeval)="changeval2($event)" id='{{step.step_id}}' [section_id]='section.sec_id' (notifyParent)="getNotification($event)" [wid]='wid'></app-card>
+    </div>
+  </div>
+</div>

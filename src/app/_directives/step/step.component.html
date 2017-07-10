@@ -1,0 +1,12 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="margin">
+  <div *ngFor="let img of showimg ; let i = index">
+    <div fxLayout="column" fxLayoutAlign="center center" class="hove">
+      <md-icon class="icon" (click)='del(i)'>delete</md-icon>
+      <img src="{{img}}" width="50" height="50" style="padding : 5px 8px" (click)=changeimg(i)>
+    </div>
+  </div>
+  <button md-icon-button (click)="uploadimage()"><md-icon>add_a_photo</md-icon></button>
+</div>
+<div #canvas class="canvas"></div>
+<input #file type="file" name="file" accept="image/*" #inp
+(change)="handleInputChange($event)" [hidden]='true'>

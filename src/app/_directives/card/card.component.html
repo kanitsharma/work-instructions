@@ -1,0 +1,169 @@
+<div class="overlay" #overlay (click)='offClickHandler()' *ngIf='!counter2 == 0'>
+
+</div>
+<div style="position : relative;">
+<div class="step" #full fxLayout="row" >
+  <div  class="wrapper" fxLayout="row" *ngIf='menuhide'>
+    <div class="undercard">
+      <md-card >
+        <md-card-content>
+          <div fxLayout='row' fxLayoutAlign='start center'>
+            <p class="txt" *ngIf='menuhide'>
+             Step{{si+1}}.  {{step.t}}
+           </p>
+          </div>
+          <div fxLayout="column" >
+            <div fxLayout="row" class="wrapper">
+              <div fxLayout = "column" class="annotatecontainer" fxLayoutAlign="start  center" fxFlex="40">
+                <div style="position : relative;">
+                  <div fxLayout = "row" fxLayoutAlign="start  center">
+                    <div class="slider" fxLayout="row">
+                      <div #slider class="scon">
+                          <img src="{{img}}" class="img" *ngFor="let img of showimg" >
+                      </div>
+                      <button #fbut1 md-icon-button class="fbut1" (click)='moveleft()'><md-icon>keyboard_arrow_left</md-icon></button>
+                      <button #fbut2 md-icon-button class="fbut2" (click)='moveright()'><md-icon>keyboard_arrow_right</md-icon></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="instruction" fxFlex="60" fxLayout="column">
+                <div [innerHTML]='tinyhtml| sanitizeHtml' class="innerhtml">
+                </div>
+                <div class="quest">
+                  <div class='wrapper'>
+                    <md-list-item *ngFor="let question_number of question_numbers" >
+                      <div class='container'>
+                        <md-card >
+                          <md-card-content>
+                            <div fxLayout="column" >
+                                <div>
+                                  <app-qbox [qno] = 'question_number' [step] = 'step' [section] ='section' [menuhide]='menuhide' [logichide]='logichide'></app-qbox>
+                                </div>
+                            </div>
+                          </md-card-content>
+                        </md-card>
+                      </div>
+                    </md-list-item>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        </md-card-content>
+      </md-card>
+    </div>
+  </div>
+
+  <div *ngIf='!menuhide' class="wrapper">
+    <div #full fxLayout="row" >
+      <div class="undercard">
+        <md-card>
+          <div fxLayout="row" fxLayoutAlign="start center" >
+            <div>
+              <md-input-container>
+                <input mdInput type = 'text' placeholder="Enter Step"  [(ngModel)] = 'step.t'>
+              </md-input-container>
+            </div>
+            <div style="margin-left: auto;">
+              <button md-icon-button mdTooltip="Add New Step" mdTooltipPosition="left" value="add" class="anime" (click)="addstep()" ><md-icon>add</md-icon></button>
+            </div>
+          </div>
+          <md-card-content>
+            <div fxLayout="column" >
+              <div fxLayout="row" class="wrapper2">
+                <div fxLayout = "column" class="annotatecontainer" *ngIf='group.value!="comment"' fxFlex="40" fxLayoutAlign="start  center">
+                  <div  fxLayout = "row" fxLayoutAlign="start  start">
+                    <div class="slider" fxLayout="row" style="position : relative;">
+                      <div #slider class="scon">
+                          <img src="{{img}}" class="img" *ngFor="let img of showimg" >
+                      </div>
+                      <button #fbut1 md-icon-button class="fbut1" (click)='moveleft()'><md-icon>keyboard_arrow_left</md-icon></button>
+                      <button #fbut2 md-icon-button class="fbut2" (click)='moveright()'><md-icon>keyboard_arrow_right</md-icon></button>
+                      <button md-icon-button class="editbut2"   (click)='editimg()' ><md-icon>brush</md-icon></button>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="instruction" fxFlex="60" fxLayout="column" >
+                  <div *ngIf='!questionc && !group.value' style="position : relative;width:auto;">
+                    <div [innerHTML]='tinyhtml| sanitizeHtml' class="textarea" *ngIf='showtiny'>
+                    </div>
+                    <div [hidden] = 'showtiny'>
+                      <textarea class="tinymce">
+                        {{tinyhtml}}
+                      </textarea>
+                    </div>
+                    <button md-icon-button class="editbut"   (click)='tinyedit()' ><md-icon>event_note</md-icon></button>
+
+                  </div>
+                  <div class="quest" *ngIf='group.value=="add"'>
+                    <div class='wrapper'>
+                      <md-list-item *ngFor="let question_number of question_numbers ; let i = index">
+                        <div >
+                          <md-card >
+                            <md-card-content>
+                              <div fxLayout="column" >
+                                  <div fxLayout="row" fxLayoutAlign="start center" style="margin-bottom : 20px;">
+                                    <div fxLayout="row" fxLayoutAlign="start end">
+                                      <h4>Questions</h4>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start start">
+                                      <button md-icon-button (click)="addnew()"><md-icon>add</md-icon></button>
+                                      <button md-icon-button (click)="delete(question_number)"><md-icon>delete</md-icon></button>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <app-qbox [qno] = 'question_number' [step] = 'step' [section] ='section' [wid]='wid' [menuhide]='menuhide' [logichide]='logichide'></app-qbox>
+                                  </div>
+                              </div>
+                            </md-card-content>
+                          </md-card>
+                        </div>
+                      </md-list-item>
+                    </div>
+                  </div>
+                  <div class="tinycontainer" *ngIf='group.value=="reference"'>
+                    <h5>Add your references</h5>
+                    <input type="urls" placeholder="Link://" #fl class="link"
+                    (keyup.enter)="newfile()" required>
+                    <div class="file" *ngFor="let file of files">
+                      <a href="{{file}}">{{file}}</a>
+                    </div>
+                  </div>
+                  <div class="tinycontainer" style="width : 600px; margin : 10px 5px;" *ngIf='group.value=="comment"'>
+                    <app-comments [step]='step' [wid]='wid'></app-comments>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </md-card-content>
+        </md-card>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="float menu" #seco>
+  <md-button-toggle-group #group="mdButtonToggleGroup" fxLayout="column" fxLayoutAlign ="start start">
+    <md-button-toggle mdTooltip="Edit" mdTooltipPosition="left" (click) = 'edit()'><md-icon>create</md-icon></md-button-toggle>
+    <div class="buttoggle" #toggle fxLayout="column">
+      <md-button-toggle mdTooltip="Add New Question" mdTooltipPosition="left" value="add" class="anime" (click)='newques'><md-icon>help</md-icon></md-button-toggle>
+      <md-button-toggle mdTooltip="Reference" mdTooltipPosition="left" class="anime"  value="reference"><md-icon>book</md-icon></md-button-toggle>
+      <md-button-toggle mdTooltip="Logic" mdTooltipPosition="left" (click)="logic()" value= 'add' class="anime"><md-icon>build</md-icon></md-button-toggle>
+      <md-button-toggle mdTooltip="View and add comments" mdTooltipPosition="left" class="anime" value="comment" ><md-icon>sms</md-icon></md-button-toggle>
+    </div>
+  </md-button-toggle-group>
+</div>
+<div class="float2" #commentp>
+  <div  *ngFor="let com of comments;let i = index" >
+    <div *ngIf='com.stat != "r"' class="commento">
+      <p style="margin-top : 10px;margin-bottom : 10px;margin-left : 10px;font-size : 15px;">{{com.t}}</p>
+      <div fxLayout="row" fxLayoutAlign ="end end">
+        <a style="text-decoration:none;color:black;padding:5px;font-size:10px;cursor:pointer" (click)="resolve(i)">Resolve</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

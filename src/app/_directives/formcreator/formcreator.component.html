@@ -1,0 +1,98 @@
+<div fxLayout="column" class="formcontainer">
+  <div fxLayout="row" class="toolbar" >
+    <button md-icon-button (click)="collapse()"><md-icon>dehaze</md-icon></button>
+    <div>
+      <p>&nbsp;&nbsp;{{template.title}}</p>
+    </div>
+  </div>
+  <div fxLayout="row" >
+    <div class="outline" #outline>
+      <div class="outlineheader" fxLayout = 'row' fxLayoutAlign = 'start center'>
+        <h2 >Outline</h2>
+      </div>
+      <div class="outlinelinks">
+        <a pageScroll href="#pre" #h1 style="  padding: 10px 0px;">Prerequistes</a>
+        <a pageScroll href="#mts" #h2 style="  padding: 10px 0px;">Materials</a>
+        <a pageScroll href="#lts" #h3 style="  padding: 10px 0px;">List of tools</a>
+      </div>
+      <div class="wrapper">
+        <div *ngFor='let section of template.sections; let j = index' fxLayout="column" class='container' fxLayoutAlign="start start">
+            <div class="hove">
+              <a pageScroll href="#{{section.sec_id}}" class="large"><strong>{{j+1}} . {{section.t}}</strong></a>
+              <a class="small" (click)="add()"><md-icon>content_copy</md-icon></a>
+              <a class="small" (click) ="delete(section.sec_id)"><md-icon>delete</md-icon></a>
+            </div>
+            <div class="inner" *ngFor='let step of section.steps;let i = index'>
+              <div class="hove">
+                <a [ngClass]="{'large' : j==ji&&i==si}" pageScroll href="#{{step.step_id}}" style="margin-right:15px;margin-bottom:3px;">{{j+1}}.{{i+1}}&nbsp;&nbsp;{{step.t}}</a>
+                <a class="small" (click)="addstep(section.sec_id)"><md-icon>content_copy</md-icon></a>
+                <a class='small' (click)='deletestep(step.step_id)'><md-icon>delete</md-icon></a>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div fxLayout='column' #container  class='container2'>
+      <div class="prereq" id="pre">
+        <div class='toolbar2' #t1 (click)="show()">
+          <p>Prerequisites</p>
+        </div>
+        <div class="hiddenpre" #sh>
+          <textarea class="tinymce1">
+            {{tinyhtml}}
+          </textarea>
+        </div>
+      </div>
+      <div class="prereq" id="mts">
+        <div class='toolbar2' #t2 (click)="show2()">
+          <p>Materials</p>
+        </div>
+        <div class="hiddenpre" #sh2 >
+          <table>
+            <tr>
+              <th>#</th>
+              <th fxLayout = "row" fxLayoutAlign = "start center" style="padding-left:10px;">Materials</th>
+            </tr>
+            <tr *ngFor = "let tr of template.materials; let i = index">
+              <td class="pad">{{i+1}}</td>
+              <td class="pad">
+                <div fxLayout = "row" fxLayoutAlign = "start center" style="padding-left:10px;">
+                  <div style="cursor : pointer;" (click)='selectm(i)' [class.opace]="cm[i]">
+                    {{tr.name}}
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="prereq" id="lts">
+        <div class='toolbar2'#t3 (click)="show3()">
+          <p>List of tools</p>
+        </div>
+        <div class="hiddenpre" #sh3 >
+          <table>
+            <tr>
+              <th>#</th>
+              <th fxLayoutAlign = "start center" style="padding-left:10px;">Equipments</th>
+            </tr>
+            <tr *ngFor = "let tr of
+            template.tools; let i = index">
+              <td class="pad">{{i+1}}</td>
+              <td class="pad">
+                <div fxLayout = "row" fxLayoutAlign = "start center" style="padding-left:10px;">
+                  <div style="cursor : pointer;" (click)='selectt(i)' [class.opace]="ct[i]">
+                    {{tr.name}}
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div *ngFor = 'let section of template.sections; let i = index' class='container'>
+          <app-section (notifyParent2)="getNotification($event)" (changeval)="changeval($event)"  [section] = 'section' [i] = 'i'   [wid] = 'template.wid' id='{{section.sec_id}}' [section_id]='section.sec_id'></app-section>
+      </div>
+    </div>
+  </div>
+</div>
